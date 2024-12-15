@@ -1,12 +1,21 @@
+#imports
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow,QWidget, QLabel,QPushButton,QGridLayout,QHBoxLayout,QVBoxLayout
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt 
+
+#class
 class Calculator(QMainWindow):
+    #constructor
     def __init__(self):
+        #call super constructor
         super().__init__()
+
+        #set window properties
         self.setWindowTitle("Calculator")
         self.setGeometry(100, 100, 400, 300)
+
+        #create widgets
         self.label = QLabel("", self)
         self.button1 = QPushButton("1", self)
         self.button2 = QPushButton("2", self)
@@ -27,8 +36,14 @@ class Calculator(QMainWindow):
         self.buttonDot = QPushButton(".", self)
         self.buttonDEL = QPushButton("DEL",self)
 
-        buttons = [self.button1, self.button2, self.button3, self.button4, self.button5, self.button6, self.button7, self.button8, self.button9, self.button0, self.buttonMinus, self.buttonPlus, self.buttonMultiply, self.buttonDivide]
+        #grouping buttons
+        buttons = [self.button1, self.button2, self.button3,
+                    self.button4,self.button5, self.button6,
+                    self.button7, self.button8,self.button9,
+                    self.button0, self.buttonMinus, self.buttonPlus,
+                    self.buttonMultiply, self.buttonDivide]
         
+        #link buttons clicked
         for button in buttons:
             button.clicked.connect(self.buttonClicked)
 
@@ -47,7 +62,9 @@ class Calculator(QMainWindow):
         self.label.setText("")
 
     def buttonEqualClicked(self):
+        #Error handling
         try:
+            #calculate
             result = eval(self.label.text())
             self.label.setText(str(result))
         except ZeroDivisionError:
@@ -65,10 +82,14 @@ class Calculator(QMainWindow):
         if self.label.text():
             self.label.setText(self.label.text()[:-1])
 
+    #init UI
     def initUI(self):
+
+        #create layout
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         
+        #create grid layout
         glayout = QGridLayout()
         glayout.addWidget(self.button7, 0, 0)
         glayout.addWidget(self.button8, 0, 1)
@@ -87,11 +108,12 @@ class Calculator(QMainWindow):
         glayout.addWidget(self.buttonDivide, 3, 2)
         glayout.addWidget(self.buttonMultiply, 3, 3)
 
+        #create horizontal layout
         hbox = QHBoxLayout()
         hbox.addWidget(self.buttonDEL)
         hbox.addWidget(self.buttonEqual)
 
-        
+        #create main layout
         main_layout = QVBoxLayout() 
         main_layout.addWidget(self.label)
         main_layout.addLayout(glayout)
@@ -99,6 +121,7 @@ class Calculator(QMainWindow):
 
         central_widget.setLayout(main_layout)
 
+        #set style
         self.setStyleSheet("""
         QPushButton {
             font-size: 30px;
@@ -124,11 +147,13 @@ class Calculator(QMainWindow):
         }
         """)
 
+#main
 def main():
     app = QApplication(sys.argv)
     calculator = Calculator()
     calculator.show()
     sys.exit(app.exec_())
 
+#run
 if __name__ == "__main__":
     main()
